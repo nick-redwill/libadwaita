@@ -14,8 +14,8 @@ do system-wide installation **on your risk**.
 
 For custom themes to be applied you must set these environment variables:
 ```
-export $GTK_THEME_LIGHT=Adwaita
-export $GTK_THEME_DARK=Adwaita-Dark
+export GTK_THEME_LIGHT=Adwaita
+export GTK_THEME_DARK=Adwaita-Dark
 ```
 
 Or if you want to apply theme only to a specific app:
