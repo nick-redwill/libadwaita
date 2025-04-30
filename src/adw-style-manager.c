@@ -258,7 +258,35 @@ update_stylesheet (AdwStyleManager       *self,
                   NULL);
 
     self->setting_dark = FALSE;
-}
+  }
+
+  /**
+   * HACK: 
+   * This part of code is responsible for dynamic color scheme changing for user-specified 
+   * theme. For this to work you should set GTK_THEME_DARK/GTK_THEME_LIGHT
+   * environment variables. The variables must contain theme directory name located
+   * in ~/.themes
+   *
+   * If neither of variables is set, default theme will be applied.
+   * If only GTK_THEME_LIGHT variable is set, it will be applied 
+   * no matter what scheme is selected
+  */
+  const char* dark_theme = g_getenv("GTK_THEME_DARK");
+  const char* light_theme = g_getenv("GTK_THEME_LIGHT");
+  // printf("%s - %s\n", light_theme, dark_theme);
+
+  if (light_theme || dark_theme) {
+    if (dark_theme && self->dark) {
+      g_object_set (self->gtk_settings,
+        "gtk-theme-name", dark_theme,
+        NULL);
+    } else {
+      g_object_set (self->gtk_settings,
+        "gtk-theme-name", light_theme,
+        NULL);
+    }
+  }
+  
 
   if (flags & UPDATE_BASE && self->provider) {
     if (adw_settings_get_high_contrast (self->settings))
